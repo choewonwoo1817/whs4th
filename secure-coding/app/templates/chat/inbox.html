@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}내 채팅{% endblock %}
+{% block content %}
+  <h1>내 채팅</h1>
+  <p class="muted"><a href="{{ url_for('chat.global_chat') }}">전체 채팅으로 가기</a></p>
+
+  {% if conversations %}
+    <ul class="product-list">
+      {% for c in conversations %}
+        <li class="product-item">
+          <a href="{{ url_for('chat.private_chat', user_id=c.partner_id) }}">{{ c.display_name }}님과의 대화</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">아직 1:1 대화가 없습니다. 상품 상세 페이지의 "판매자와 1:1 채팅" 또는 프로필에서 대화를 시작하세요.</p>
+  {% endif %}
+{% endblock %}

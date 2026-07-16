@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}송금{% endblock %}
+{% block content %}
+  <h1>송금</h1>
+  <p class="muted">내 잔액: {{ balance }}P</p>
+  <form method="post" action="{{ url_for('transfer.transfer') }}" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>받는 사람 (아이디)
+      <input name="to_username" value="{{ to_username }}" required maxlength="20">
+    </label>
+    <label>금액(P)
+      <input type="number" name="amount" required min="1" max="1000000000">
+    </label>
+    <button type="submit">송금하기</button>
+  </form>
+{% endblock %}

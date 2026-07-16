@@ -1,0 +1,35 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# --- Flask / 애플리케이션 런타임 산출물 ---
+instance/
+*.db
+*.sqlite
+*.sqlite3
+uploads/
+flask_session/
+
+# --- 시크릿 / 환경설정 (절대 커밋 금지) ---
+.env
+*.env
+!.env.example
+
+# --- ngrok ---
+ngrok.yml
+.ngrok2/
+
+# --- OS / 에디터 ---
+.DS_Store
+.idea/
+.vscode/
+
+# --- 공개 레포에서 제외 (강사 자료·캐시·빌드 산출물) ---
+secure-coding-slide.v2.pdf
+.pytest_cache/
+.coverage
+보고서/통합보고서.html

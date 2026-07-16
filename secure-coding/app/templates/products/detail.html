@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ p.title }}{% endblock %}
+{% block content %}
+  <article class="product-detail">
+    <h1>{{ p.title }}</h1>
+    {% if p.image_path %}
+      <img class="product-img" src="{{ url_for('products.uploaded_file', name=p.image_path) }}" alt="상품 이미지">
+    {% endif %}
+    <p class="price">{{ p.price }}원</p>
+    <p class="desc">{{ p.description }}</p>
+    <p class="muted">판매자:
+      <a href="{{ url_for('users.profile', id=p.seller_id) }}">{{ p.seller_name }}</a>
+    </p>
+
+    <div class="actions">
+      {% if is_owner %}
+        <a class="btn" href="{{ url_for('products.edit', id=p.id) }}">수정</a>
+        <form method="post" action="{{ url_for('products.delete', id=p.id) }}" class="inline"
+              data-confirm="삭제하시겠습니까?">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger">삭제</button>
+        </form>
+      {% endif %}
+      {% if current_user and not is_owner %}
+        <a class="btn" href="{{ url_for('chat.private_chat', user_id=p.seller_id) }}">판매자와 1:1 채팅</a>
+        <a class="btn btn-danger" href="{{ url_for('reports.new', target_type='product', target_id=p.id) }}">신고</a>
+      {% endif %}
+    </div>
+  </article>
+{% endblock %}

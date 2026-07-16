@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}마이페이지{% endblock %}
+{% block content %}
+  <h1>마이페이지</h1>
+  <p class="muted">@{{ user.username }} · 잔액 {{ user.balance }}P</p>
+
+  <h2>내가 등록한 상품</h2>
+  {% if products %}
+    <table class="admin-table">
+      <tr><th>상품명</th><th>가격</th><th>상태</th><th>관리</th></tr>
+      {% for p in products %}
+        <tr>
+          <td><a href="{{ url_for('products.detail', id=p.id) }}">{{ p.title }}</a></td>
+          <td>{{ p.price }}P</td>
+          <td>{{ "차단됨" if p.is_blocked else "정상" }}</td>
+          <td>
+            <a href="{{ url_for('products.edit', id=p.id) }}">수정</a>
+            <form method="post" action="{{ url_for('products.delete', id=p.id) }}" class="inline"
+                  data-confirm="삭제하시겠습니까?">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="linkbtn">삭제</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p class="muted">등록한 상품이 없습니다. <a href="{{ url_for('products.new') }}">상품 등록하기</a></p>
+  {% endif %}
+
+  <h2>소개글</h2>
+  <form method="post" action="{{ url_for('users.mypage') }}" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="action" value="bio">
+    <label>소개글
+      <textarea name="bio" rows="4" maxlength="500">{{ user.bio }}</textarea>
+    </label>
+    <button type="submit">소개글 저장</button>
+  </form>
+
+  <h2>비밀번호 변경</h2>
+  <form method="post" action="{{ url_for('users.mypage') }}" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="action" value="password">
+    <label>현재 비밀번호
+      <input type="password" name="current_password" required autocomplete="current-password">
+    </label>
+    <label>새 비밀번호
+      <input type="password" name="new_password" required minlength="8" autocomplete="new-password">
+    </label>
+    <label>새 비밀번호 확인
+      <input type="password" name="new_password_confirm" required minlength="8" autocomplete="new-password">
+    </label>
+    <button type="submit">비밀번호 변경</button>
+  </form>
+{% endblock %}

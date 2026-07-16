@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{% block title %}중고거래 플랫폼{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="{{ url_for('main.index') }}">🛒 중고마켓</a>
+    <nav>
+      <a href="{{ url_for('products.search') }}">검색</a>
+      {% if current_user %}
+        <a href="{{ url_for('products.new') }}">상품등록</a>
+        <a href="{{ url_for('chat.global_chat') }}">전체채팅</a>
+        <a href="{{ url_for('chat.inbox') }}">내채팅</a>
+        <a href="{{ url_for('transfer.transfer') }}">송금</a>
+        <a href="{{ url_for('users.mypage') }}">마이페이지</a>
+        {% if current_user.is_admin %}<a href="{{ url_for('admin.dashboard') }}">관리자</a>{% endif %}
+        <span class="user">{{ current_user.display_name }}님</span>
+        <form method="post" action="{{ url_for('auth.logout') }}" class="inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="linkbtn">로그아웃</button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">로그인</a>
+        <a href="{{ url_for('auth.register') }}">회원가입</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, msg in messages %}
+            <div class="flash flash-{{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <small>Tiny Second-hand Shopping Platform · Secure Coding 과제</small>
+  </footer>
+  <script src="{{ url_for('static', filename='js/confirm.js') }}"></script>
+</body>
+</html>

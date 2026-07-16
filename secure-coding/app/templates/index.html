@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}상품 목록{% endblock %}
+{% block content %}
+  <h1>상품 목록</h1>
+
+  {% if products %}
+    <ul class="product-list">
+      {% for p in products %}
+        <li class="product-item">
+          <a href="{{ url_for('products.detail', id=p.id) }}">{{ p.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">아직 등록된 상품이 없습니다.</p>
+  {% endif %}
+{% endblock %}

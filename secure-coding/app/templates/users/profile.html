@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ u.display_name }} 프로필{% endblock %}
+{% block content %}
+  <h1>{{ u.display_name }}</h1>
+  <p class="muted">@{{ u.username }}</p>
+  <div class="bio-box">{{ u.bio or "소개글이 없습니다." }}</div>
+  {% if current_user and current_user.id != u.id %}
+    <p class="actions">
+      <a class="btn" href="{{ url_for('chat.private_chat', user_id=u.id) }}">1:1 채팅하기</a>
+      <a class="btn btn-danger" href="{{ url_for('reports.new', target_type='user', target_id=u.id) }}">이 사용자 신고</a>
+    </p>
+  {% endif %}
+
+  <h2>판매 상품</h2>
+  {% if products %}
+    <ul class="product-list">
+      {% for p in products %}
+        <li class="product-item">
+          <a href="{{ url_for('products.detail', id=p.id) }}">{{ p.title }}</a>
+          <span class="price">{{ p.price }}원</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">등록한 상품이 없습니다.</p>
+  {% endif %}
+{% endblock %}

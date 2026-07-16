@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}신고{% endblock %}
+{% block content %}
+  <h1>신고하기</h1>
+  <form method="post" action="{{ url_for('reports.new') }}" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="target_type" value="{{ target_type }}">
+    <input type="hidden" name="target_id" value="{{ target_id }}">
+    <p class="muted">대상: {{ "사용자" if target_type == "user" else "상품" }}</p>
+    <label>신고 사유
+      <textarea name="reason" rows="4" required maxlength="500"
+                placeholder="신고 사유를 구체적으로 작성해 주세요."></textarea>
+    </label>
+    <button type="submit">신고 제출</button>
+  </form>
+{% endblock %}

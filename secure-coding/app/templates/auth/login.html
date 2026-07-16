@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}로그인{% endblock %}
+{% block content %}
+  <h1>로그인</h1>
+  <form method="post" action="{{ url_for('auth.login') }}" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>아이디
+      <input name="username" value="{{ username or '' }}" required autocomplete="username">
+    </label>
+    <label>비밀번호
+      <input type="password" name="password" required autocomplete="current-password">
+    </label>
+    <button type="submit">로그인</button>
+  </form>
+  <p class="muted">계정이 없으신가요? <a href="{{ url_for('auth.register') }}">회원가입</a></p>
+{% endblock %}
